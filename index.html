@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>School Fees Management</title>
+    <link rel="stylesheet" href="school.css">
+</head>
+<body>
+
+<div class="container">
+    <h2> D.C.A. School Fees Management System</h2>
+
+    <select id="classSelect"  onchange="loadStudents()">
+        <option value="">Select Class</option>
+        <option value="Nursery">NURSERY</option>
+        <option value="KG1">KG 1</option>
+        <option value="KG2">KG 2</option>
+        <option value="Class 1">CLASS 1</option>
+        <option value="Class 2">CLASS 2</option>
+        <option value="Class 3">CLASS 3</option>
+        <option value="Class 4">CLASS 4</option>
+        <option value="Class 5">CLASS 5</option>
+        <option value="Class 6">CLASS 6</option>
+        <option value="JHS 1">J.H.S 1</option>
+        <option value="JHS 2">J.H.S 2</option>
+        <option value="JHS 3">J.H.S 3</option>
+    </select>
+
+    <input type="text" id="studentName" placeholder="Student Name">
+    <input type="number" id="amountPaid" placeholder="Amount Paid">
+    <button onclick="addStudent()">UPDATE STUDENT</button>
+
+    <div class="table-container">
+        <table>
+            <thead>
+                <tr>
+                    <th>Student Name</th>
+                    <th>Total Fees</th>
+                    <th>Paid</th>
+                    <th>Remaining</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody id="studentTable">
+                <!-- Student data loads here -->
+            </tbody>
+        </table>
+    </div>
+
+   
+</div>
+
+<script>
+    
+    let students = {
+            "Nursery": [
+                { name: "KWAW JASON JOJO", paid: 0, parent: "JULIET ANDERSON", contact: "0279531885", location: "Takoradi", dob: "2022-01-17", gender: "Male", admissionNo: "706" },
+                { name: "ENOCH KWESI BAIDOO", paid: 0, parent: "MADAM HELENA", contact: "0244001427", location: "Takoradi", dob: "2021-01-03", gender: "Male", admissionNo: "696" },
+                { name: "RIGHTEOUS APPIAH", paid: 0, parent: "Mrs. APPIAH", contact: "0249315436", location: "Takoradi", dob: "2021-06-10", gender: "Male", admissionNo: "711" },
+                { name: "KWEKU  NYANKOPON", paid: 0, parent: "RE.  ISSAC", contact: "0556269496", location: "Takoradi", dob: "2022-06-01", gender: "Male", admissionNo: "753" },
+                { name: "TRUTH ABA PHYLIX KESSEWA", paid: 0, parent: "MAVIS COBBINAH", contact: "0597329546", location: "Takoradi", dob: "2020-03-31", gender: "Female", admissionNo: "728" },
+                { name: "ISABELLA EFUA NUAMAH", paid: 0, parent: "Mrs. NUAMAH", contact: "0545144676", location: "Takoradi", dob: "2021-02-21", gender: "Female", admissionNo: "700" },
+                { name: "EUGENIA ARTHUR", paid: 0, parent: "Bro. DANIEL", contact: "0247406696", location: "Takoradi", dob: "2022-09-24", gender: "Female", admissionNo: "692" },
+                { name: "AGNES AHO", paid: 0, parent: "ZENETOR AHO", contact: "0547552982", location: "Takoradi", dob: "", gender: "Female", admissionNo: "" },
+                { name: "PATIENCE KORMEL", paid: 0, parent: "Mr. KORMEL", contact: "0546514688", location: "Tak`oradi", dob: "2022-04-19", gender: "Female", admissionNo: "725" },
+                { name: "NARESSA ABENA MENSAH", paid: 0, parent: "Mrs. AYEPAH", contact: "", location: "Takoradi", dob: "2021-04-20", gender: "Female", admissionNo: "722" },
+                { name: "JOYCE MENSAH", paid: 0, parent: "EUNICE", contact: "0543822235", location: "Takoradi", dob: "2020-07-01", gender: "Female", admissionNo: "686" },
+                { name: "RANSFORD ARTHUR", paid: 0, parent: "Mr. ARTHUR", contact: "0505575857", location: "Takoradi", dob: "2021-12-22", gender: "Male", admissionNo: "732" },
+                { name: "SHIPHRAH EUER BENSON", paid: 0, parent: "Mr.  BENSON", contact: "055901161", location: "Takoradi", dob: "2021-09-30", gender: "Female", admissionNo: "733" },
+                { name: "KWEKU ARHIN DARLINGTON", paid: 0, parent: "MATHIES QUAICOE", contact: "0241896983", location: "Takoradi", dob: "2022-08-31", gender: "Male", admissionNo: "734" },
+                { name: "JESUSLINA EFUA QUAICOE", paid: 0, parent: "Miss. MENSAH", contact: "0554969158", location: "Takoradi", dob: "2022-01-08", gender: "Female", admissionNo: "736" },
+                { name: "MIRACLE ADEPA ADJEI", paid: 0, parent: "Mrs. ADJEI", contact: "0553745297", location: "Takoradi", dob: "2023-01-12", gender: "Female", admissionNo: "746" },
+                { name: "NANCY MENSIMA DONKOR", paid: 0, parent: "Mrs. DONKOR", contact: "0532593550", location: "Takoradi", dob: "2020-12-18", gender: "Female", admissionNo: "743" },
+                { name: "CHRISTLOVE .A . ESHUN", paid: 0, parent: "Miss. AFROPAH", contact: "0552014410", location: "Takoradi", dob: "2023-04-14", gender: "Female", admissionNo: "745" },
+                { name: "ISSAC KOFI GODWILL", paid: 0, parent: "Miss. QUAICOE", contact: "0595278210 ", location: "Takoradi", dob: "2023-05-12", gender: "Male", admissionNo: "744" },
+                { name: "FAISAL ZACHARIAH NYAME", paid: 0, parent: "", contact: "", location: "Takoradi", dob: "", gender: "Male", admissionNo: "" },
+                { name: "HENRY DADZIE", paid: 0, parent: "Mr. DADZIE", contact: "0593242934", location: "Takoradi", dob: "2022-09-24", gender: "Male", admissionNo: "747" },
+                { name: "FRANK YAWSON", paid: 0, parent: "PATRICIA COBBINA", contact: "0532499440", location: "Takoradi", dob: "2022-01-26", gender: "Male", admissionNo: "751" },
+                { name: "NANA YAW DARKO", paid: 0, parent: "MR. DANSO", contact: "", location: "Takoradi", dob: "2023-03-23", gender: "Male", admissionNo: "748" },
+                { name: "PAPA COBINA EWIM-MENSAH", paid: 0, parent: "Mr.EWIM MENSAH", contact: "", location: "Takoradi", dob: "", gender: "Male", admissionNo: "" },
+                { name: "JOACHIM BAIDOO", paid: 0, parent: "Mr.BAIDOO ", contact: "0245694255", location: "Takoradi", dob: "", gender: "Male", admissionNo: "" },
+                
+            ],
+            "KG1": [
+                { name: "NANA KOJO AMISSAH", paid: 0, parent: "GEORGINA AHENAKWAH", contact: "0245720741", location: "Takoradi", dob: "2019-06-07", gender: "Male", admissionNo: "726" },
+                { name: "GERALD JOHN DADZI", paid: 0, parent: "ERIC DADZI", contact: "0594296333", location: "Takoradi", dob: "2020-04-15", gender: "Male", admissionNo: "672" },
+                { name: "AARON TSEUI", paid: 0, parent: "SIS LINDA", contact: "", location: "Takoradi", dob: "", gender: "Male", admissionNo: "755" },
+                { name: "LORDINA ADJEI", paid: 0, parent: "SIS VERONICA", contact: "0559985087", location: "Takoradi", dob: "2021-02-25", gender: "Female", admissionNo: "688" },
+                { name: "MONICA AHO", paid: 0, parent: "MR. AHO", contact: "0547552982", location: "Takoradi", dob: "2020-11-25", gender: "Female", admissionNo: "756" },
+                { name: "HENRY NKETSIA", paid: 0, parent: "Mr . NKETIA", contact: "0240241977", location: "Takoradi", dob: "2020-02-14", gender: "Male", admissionNo: "731" }
+          
+            ],
+            "KG2": [
+                { name: "ELVIS AHIAVE", paid: 0, parent: "", contact: "", location: "Takoradi", dob: "", gender: "Male", admissionNo: "765" },
+                { name: "KWEKU ATTA AWORTWE", paid: 0, parent: "SIS. DORCAS ", contact: "0500004435", location: "Takoradi", dob: "2020-01-15", gender: "Male", admissionNo: "621" },
+                { name: "EMMANUEL KWOFIE", paid: 0, parent: "SIS . SEBINA", contact: "0534983585", location: "Takoradi", dob: "2018-10-21", gender: "Male", admissionNo: "757" },
+                { name: "GODFRED ACKON", paid: 0, parent: "JANET AHENAKWA", contact: "0546728594", location: "Takoradi", dob: "2017-02-26", gender: "Male", admissionNo: "695" },
+                { name: "JUSTICE YAMOAH QUAYSON", paid: 0, parent: "MR. YAMAOH", contact: "0532500841", location: "Takoradi", dob: "2019-03-", gender: "Male", admissionNo: "623" },
+                { name: "VERONICA AHO", paid: 0, parent: "SIS MAVIS", contact: "0278235442", location: "Takoradi", dob: "2019-09-10", gender: "Female", admissionNo: "624" },
+                { name: "CHRISTABLE ANNAN", paid: 0, parent: "SIS PRISCILLA ", contact: "0542825667", location: "Takoradi", dob: "2019-10-25", gender: "Female", admissionNo: "673" },
+                { name: "LEENA B. BOSOMTWE", paid: 0, parent: "MR.BOSOMTWE", contact: "0246273549", location: "Takoradi", dob: "2020-05-11", gender: "Female", admissionNo: "697" },
+                { name: "TRACY EKUA CUDJOE", paid: 0, parent: "MR. CUDJOE", contact: "0556983768", location: "Takoradi", dob: "2020-05-08", gender: "Female", admissionNo: "626" },
+                { name: "ISABELLA KOEMEL", paid: 0, parent: "Mr. KORMEL", contact: "0546514688", location: "Takoradi", dob: "2018-09-05", gender: "Female", admissionNo: "679" },
+                { name: "HELINA A. MENSAH", paid: 0, parent: "SIS ELIZABETH", contact: "0546604904", location: "Takoradi", dob: "2019-12-05", gender: "Female", admissionNo: "588" },
+                { name: "UNIFRED ARABA QUAICOE", paid: 0, parent: "PRICILLA ANNA", contact: "0554969153", location: "Takoradi", dob: "2019-25-03", gender: "Female", admissionNo: "671" },
+                { name: "PHILIP NKETSIA", paid: 0, parent: "MR. NKETIA", contact: "0240241977", location: "Takoradi", dob: "2017-12-25", gender: "Male", admissionNo: "758" },
+                { name: "JOSHUA CUDJOE", paid: 0, parent: "Mr. CUDJOE", contact: "0597880488", location: "Takoradi", dob: "", gender: "Male", admissionNo: "738" },
+                { name: "EMMANUEL KWAKYE", paid: 0, parent: "Mr. KWAKYE", contact: "0249165166", location: "Takoradi", dob: "2019-01-02", gender: "Male", admissionNo: "712" },
+           
+            ],
+            "Class 1": [
+                { name: "WINFRED ADJEI", paid: 0, parent: "Mr. ADJEI", contact: "0553097007", location: "Takoradi", dob: "2018-11-25", gender: "Male", admissionNo: "678" },
+                { name: "AARON ASSEFUAH MENSAH", paid: 0, parent: "Mr. ASSEFUAH", contact: "0542850199", location: "Takoradi", dob: "2018-06-", gender: "Male", admissionNo: "680" },
+                { name: "JONATHAN MENSAH", paid: 0, parent: "SIS. CHARLOTTE", contact: "0594992906", location: "Takoradi", dob: "2017-01-01", gender: "Male", admissionNo: "693" },
+                { name: "EDUMOND QUAYSON", paid: 0, parent: "SIS. ELIZABETH", contact: "0208068597", location: "Takoradi", dob: "2018-06-21", gender: "Male", admissionNo: "690" },
+                { name: "DENIS BOATENG", paid: 0, parent: "Mr. B WOBIR", contact: "0241950781", location: "Takoradi", dob: "2018-06-19", gender: "Male", admissionNo: "622" },
+                { name: "JOSEPHINE ABAIDOO", paid: 0, parent: "MISS. MATILDA", contact: "0558629732", location: "Takoradi", dob: "2018-09-23", gender: "Female", admissionNo: "687" },
+                { name: "IVY AMA ACKON", paid: 0, parent: "Mr.MATHEW QUAICOE", contact: "0244796657", location: "Takoradi", dob: "2018-07-21", gender: "Female", admissionNo: "547" },
+                { name: "BLESSING .N. AMA ADU", paid: 0, parent: "Mr. ADU-ANDOH", contact: "0557895076", location: "Takoradi", dob: "2019-03-", gender: "Female", admissionNo: "625" },
+                { name: "ELIZABETH AMISSAH", paid: 0, parent: "FELIX AMISSAH", contact: "0550911726", location: "Takoradi", dob: "2018-09-29", gender: "Female", admissionNo: "716" },
+                { name: "ERICA ABENA DADZIE", paid: 0, parent: "ERIC DADZIE", contact: "0246349638", location: "Takoradi", dob: "2018-04-10", gender: "Female", admissionNo: "565" },
+                { name: "MAAME .A. AGO EWIM MENSAH", paid: 0, parent: "Mr. EWIM-MENSAH", contact: "0249325119", location: "Takoradi", dob: "2018-02-27", gender: "Female", admissionNo: "579" },
+                { name: "EFUA TAKYIWAA", paid: 0, parent: "Mr. QUAYSON", contact: "0554764208", location: "Takoradi", dob: "2018-06-", gender: "Female", admissionNo: "627" },
+                { name: "BERNICE BOATENG WOBIR", paid: 0, parent: "Mr. B. WOBIR", contact: "0241950781", location: "Takoradi", dob: "2018-06-19", gender: "Female", admissionNo: "573" },
+                { name: "PASCAL ASSABIL COSMOS", paid: 0, parent: "", contact: "", location: "Takoradi", dob: "", gender: "Male", admissionNo: "759" },
+                { name: "LORDINA DAMOAH", paid: 0, parent: "Mr. DAMOAH", contact: "0534354169", location: "Takoradi", dob: "2018-09-20", gender: "Male", admissionNo: "717" },
+                { name: "KINGSFORD ATTON", paid: 0, parent: "ISSAC AMISSAH", contact: "0547759543", location: "Takoradi", dob: "2018-05-21", gender: "Male", admissionNo: "742" },
+              
+            ],
+            "Class 2": [
+                { name: "PIUS ANNAN", paid: 0, parent: "REBBECCA AWORTWE", contact: "0593529452", location: "Takoradi", dob: "20117-09-31", gender: "Male", admissionNo: "724" },
+                { name: "DIDYMUS.TT.T. LAMPTEY", paid: 0, parent: "MR.LAMPTEY", contact: "0240782202", location: "Takoradi", dob: "2018-06-09", gender: "Male", admissionNo: "721" },
+                { name: "GODFRED NUAMAH", paid: 0, parent: "MERCY ABENAKWA", contact: "0545144676", location: "Takoradi", dob: "2017-07-05", gender: "Male", admissionNo: "701" },
+                { name: "PHILIP.Q.OBENG", paid: 0, parent: "REV.ISSAC", contact: "0556269496", location: "Takoradi", dob: "2017-11-08", gender: "Male", admissionNo: "669" },
+                { name: "JUSTINA ARKOH", paid: 0, parent: "SARAH AWORTWE", contact: "0593602358", location: "Takoradi", dob: "2016-09-19", gender: "Female", admissionNo: "719" },
+                { name: "RADIA HARIS", paid: 0, parent: "RUTH ANKOMAH", contact: "0592232480", location: "Takoradi", dob: "2016-12-31", gender: "Female", admissionNo: "508" },
+                { name: "TRINITY KWAKYE", paid: 0, parent: "SOPHIA AFFUL", contact: "0270727453", location: "Takoradi", dob: "2018-06-10", gender: "Female", admissionNo: "567" },
+                { name: "NATASHIA KEYDOM", paid: 0, parent: "SIS.YABA", contact: "0256465530", location: "Takoradi", dob: "2015-12-17", gender: "Female", admissionNo: "758" },
+                { name: "NUELLA OBENG", paid: 0, parent: "GRACE ANKOMAH", contact: "0240668930", location: "Takoradi", dob: "2017-05-08", gender: "Female", admissionNo: "529" },
+                { name: "PAUL EBO", paid: 0, parent: "MR.KYERIBAOH", contact: "0548305826", location: "Takoradi", dob: "2017-06-20", gender: "Male", admissionNo: "729" },
+        
+            ],
+            "Class 3": [
+                { name: "LAWRENCE KOBINA DADZIE", paid: 0, parent: "FAUSTINA", contact: "0538112479", location: "TAKORADI", dob: "2016-10-18", gender: "Male", admissionNo: "670" },
+                { name: "PRINCE AWORTWE", paid: 0, parent: "STELLA KOOMSON", contact: "0557180952", location: "TAKORADI", dob: "2017-01-18", gender: "Male", admissionNo: "671" },
+                { name: "BETHEL ABA OPPONG", paid: 0, parent: "ENOCH OPPONG", contact: "0554400986", location: "Takoradi", dob: "2017-07-30", gender: "Female", admissionNo: "685" },
+                { name: "NORA EFUA COBBINAH", paid: 0, parent: "JOSEPHINE AYAPAH", contact: "0545554110", location: "TAKORADI", dob: "2017-10-25", gender: "Female", admissionNo: "683" },
+                { name: "ANNABEL QUAYSON", paid: 0, parent: "ELIZABETH QUAYSON", contact: "0554378499", location: "TAKORADI", dob: "2017-01-18", gender: "Female", admissionNo: "754" },
+                { name: "FAITH YAA TETTEH", paid: 0, parent: "HENRY TATTEH", contact: "0244208443", location: "Takoradi", dob: "2017-07-30", gender: "Female", admissionNo: "718" },
+                { name: "SMART ADU SENYO ANDOH", paid: 0, parent: "ADU-ANDOH", contact: "0557895076", location: "Takoradi", dob: "2017-07-30", gender: "Male", admissionNo: "513" },
+        
+            ],"Class 4": [
+                { name: "AHMED ALI", paid: 0, parent: "ALHAJI ALI", contact: "0260497507", location: "Takoradi", dob: "2014-12-25", gender: "Male", admissionNo: "614" },
+                { name: "PHILIP ANDOH", paid: 0, parent: "Mr.ANDOH", contact: "0246364264", location: "TAKORADI", dob: "2015-07-03", gender: "Male", admissionNo: "374" },
+                { name: "NHYIRABA COBBINAH", paid: 0, parent: "Mr.EWIM-MENSAH", contact: "0249325114", location: "Takoradi", dob: "2014-03-24", gender: "Male", admissionNo: "576" },
+                { name: "EMMANUEL NKESIAH", paid: 0, parent: "Mr. COBBINAH", contact: "0240710457", location: "Takoradi", dob: "2014-11-11", gender: "Male", admissionNo: "704" },
+                { name: "LAWRENCIA A LAMPTEY", paid: 0, parent: "Mr. LAMPTEY", contact: "0549781654", location: "Takoradi", dob: "2014-12-07", gender: "Female", admissionNo: "720" },
+        
+            ],"Class 5": [
+                { name: "VANESSA E CUDJOE", paid: 100, parent: "UNCLE KOJO", contact: "059880488", location: "Takoradi", dob: "2013-04-5", gender: "Female", admissionNo: "739" },
+                { name: "EMMANUELQUAYSON", paid: 0, parent: "Mr. QUAYSON", contact: "0555969306", location: "Takoradi", dob: "2012-03-6", gender: "Male", admissionNo: "611" },
+                { name: "ISRAEL OBENG", paid: 0, parent: "REV. ISSAC", contact: "0556269496", location: "Takoradi", dob: "2015-07-7", gender: "Male", admissionNo: "637" },
+                { name: "GODFRED MENSAH", paid: 0, parent: "LUCY ANNAN", contact: "0551708155", location: "Takoradi", dob: "2014-06-23", gender: "Male", admissionNo: "413" },
+                { name: "BENJAMIN KRAH", paid: 0, parent: "HARRIET", contact: "0546707180", location: "Takoradi", dob: "2013-04-24", gender: "Male", admissionNo: "610" },
+                { name: "EUA AMA ACKON", paid: 0, parent: "MATTHEW QUAICOE", contact: "0244796657 ", location: "Takoradi", dob: "2014-08-02", gender: "Female", admissionNo: "423" },
+                { name: "NANA A .Y. COBBINAH ", paid: 0, parent: "COMFORT ESSOUN", contact: "0248007551", location: "Takoradi", dob: "2014-08-28", gender: "Male", admissionNo: "257" },
+                { name: "PHILIPA ACHEAMPONG", paid: 0, parent: "Mr.ACHEAMPONG", contact: "0243905681", location: "Takoradi", dob: "2014-05-17", gender: "Female", admissionNo: "445" },
+                { name: "ELIZABETH .Q. YAMOAH ", paid: 0, parent: "ALEX YAMOAH", contact: "0207436019", location: "Takoradi", dob: "2014-04-01", gender: "Female", admissionNo: "639" },
+                { name: "CHRISTABLE AWORTWE ", paid: 0, parent: "Miss. ODUOM", contact: "0206143881", location: "Takoradi", dob: "2013-09-22", gender: "Female", admissionNo: "740" },
+                { name: "FELSON HARUNA QUANSAH", paid: 0, parent: "Mr. QUANSAH", contact: "0548167695", location: "Takoradi", dob: "2014-04-14", gender: "Male", admissionNo: "741" },
+                { name: "PHILIP OBENG ", paid: 0, parent: "Mr.OBENG", contact: "0242802131", location: "Takoradi", dob: "2014-09-18", gender: "Male", admissionNo: "630" },
+    
+            ],"Class 6": [
+                { name: "ROALND KOJO ARTHUR", paid: 0, parent: "Mr. ARTHUR", contact: "0544766436", location: "Takoradi", dob: "2012-01-10", gender: "Male", admissionNo: "232" },
+                { name: "BASHIRU YUSSIF", paid: 0, parent: "ABDUL", contact: "0263820941", location: "Takoradi", dob: "2014-09-30", gender: "Male", admissionNo: "682" },
+                { name: "JOSEPH WILLIAM ESHUN", paid: 0, parent: "Mrs. ESHUN", contact: "0271635137", location: "Takoradi", dob: "2012-08-06", gender: "Male", admissionNo: "339" },
+                { name: "IMMANUEL OBENG", paid: 0, parent: "REV.OBENG", contact: "0556269496", location: "Takoradi", dob: "2013-10-22", gender: "Male", admissionNo: "628" },
+                { name: "MOHAMMED .A. YUSSIF", paid: 0, parent: "MOHAMMED ABDUL", contact: "0263820941", location: "Takoradi", dob: "2007-08-07", gender: "Male", admissionNo: "681" },
+                { name: "VERONICA COBBINAH", paid: 0, parent: "Mr. COBBINAH", contact: "", location: "Takoradi", dob: "2014-0-03", gender: "Female", admissionNo: "698" },
+                { name: "AUGUSTINA.A.MENSAH", paid: 0, parent: "Mr. ASSEFUAH", contact: "0542850199", location: "Takoradi", dob: "2013-10-09", gender: "Female", admissionNo: "689" },
+                { name: "GLENDA MENSAH", paid: 0, parent: "Mr.MENSAH", contact: "0558822223", location: "Takoradi", dob: "2014-01-16", gender: "Female", admissionNo: "702" },
+                { name: "JUSTINA ANKAH HEMENE", paid: 0, parent: "MARY HEMENE", contact: "0592224377", location: "Takoradi", dob: "2013-11-26", gender: "Female", admissionNo: "752" },
+        
+            ],"JHS 1": [
+                { name: "BLESSSING EFUAH", paid: 0, parent: "JOHN KUMAH", contact: "055491509", location: "Takoradi", dob: "2012-04-13", gender: "Female", admissionNo: "714" },
+                { name: "DELALI MACCARTHY", paid: 0, parent: "REBECCA AZORTO", contact: "0544898548", location: "Takoradi", dob: "2012-03-14", gender: "Female", admissionNo: "328 " },
+                { name: "PAULINA YAWSON", paid: 0, parent: "SABINA PRAH", contact: "0534983585", location: "Takoradi", dob: "2012-05-19", gender: "Female", admissionNo: "723" },
+                { name: "MAVIS AWORTWE", paid: 0, parent: "STELLA KOOMSON", contact: "0557180952", location: "Takoradi", dob: "2012-05-19", gender: "Female", admissionNo: "599" },
+                { name: "OPHELIA ABA PAYIN", paid: 0, parent: "EVLYN", contact: "0592594226", location: "Takoradi", dob: "2012-06-07", gender: "Female", admissionNo: "715" },
+                { name: "REYNARD COBBINAH", paid: 0, parent: "COMFORT ESSOUN", contact: "0248007551", location: "Takoradi", dob: "2012-11-21", gender: "Male", admissionNo: "405" },
+                { name: "EMMANUEL LARTEY", paid: 0, parent: "RITA LARTEY", contact: "0591053790", location: "Takoradi", dob: "2010-04-01", gender: "Male", admissionNo: "474" },
+                { name: "JEYDEN JERRY OBENG", paid: 0, parent: "Mr. OBENG", contact: "0242802131", location: "Takoradi", dob: "2012-05-07", gender: "Male", admissionNo: "406" },
+                { name: "DOMINIC CUDJOE", paid: 0, parent: "BRO.EBENEZER", contact: "0530121236", location: "Takoradi", dob: "2011-10-21", gender: "Male", admissionNo: "754" },
+        
+            ],
+            "JHS 2": [
+                { name: "JOHN ACKON", paid: 0, parent: "GLADYS ACKON", contact: "0243299325", location: "Takoradi", dob: "2011-02-2", gender: "Male", admissionNo: "617" },
+                { name: "JONATHAN ACKON", paid: 0, parent: "GLADYS ACKON", contact: "0243299325", location: "Takoradi", dob: "2011-02-2", gender: "Male", admissionNo: "618" },
+                { name: "EMMANUEL ARTHUR", paid: 0, parent: "SARAH ANNAN", contact: "0257804087", location: "Takoradi", dob: "2011-06-24", gender: "Male", admissionNo: "675" },
+                { name: "WINFRED ANKRAH", paid: 0, parent: "MONICA EGYIR", contact: "0545599364", location: "Takoradi", dob: "2011-01-24", gender: "Male", admissionNo: "530" },
+                { name: "ALI AYISHETU", paid: 0, parent: "ALHAJI ALI", contact: "0540674432", location: "Takoradi", dob: "2011-09-7", gender: "Female", admissionNo: "479" },
+                { name: "EMMANUELLA ADJEI", paid: 0, parent: "DEBORA ASSEFUAH", contact: "0243631045", location: "Takoradi", dob: "2011-08-12", gender: "Female", admissionNo: "620" },
+                { name: "RICHARD CUDJOE", paid: 0, parent: "CHARITY CUDJOE", contact: "0571391055", location: "Takoradi", dob: "2014-07-14", gender: "Male", admissionNo: "749" },
+                { name: "RICHMOND CUDJOE", paid: 0, parent: "CHARITY CUDJOE", contact: "0571391055", location: "Takoradi", dob: "2014-07-14", gender: "Male", admissionNo: "750"}
+            ],"JHS 3":  [
+                { name: "DERRICK PAA KWESI ", paid: 0, parent: "PRISCILLA", contact: "0247900549", location: "Takoradi", dob: "2010-04-19", gender: "Male", admissionNo: "283" },
+                { name: "FRANCISCA ANSAH", paid: 0, parent: "FAUSTINA ANSAH", contact: "0535379738", location: "Takoradi", dob: "2008-12-06", gender: "Female", admissionNo: "289" },
+                { name: "HELINA ACKON", paid: 0, parent: "ELIZABETH", contact: "0591068625", location: "Takoradi", dob: "2009-07-7", gender: "Female", admissionNo: "287" },
+                { name: "NATHANIEL KRAH", paid: 0, parent: "HARRIET", contact: "0546707160", location: "Takoradi", dob: "2011-05-01", gender: "Male", admissionNo: "284" },
+                { name: "VENTOLINA KWOFIE", paid: 0, parent: "BRO.BENJAMIE", contact: "0548903960", location: "Takoradi", dob: "2009-09-05", gender: "Female", admissionNo: "737" },
+        
+            ],// Add other classes here as needed
+        };
+        
+    const totalFees = 200;
+    let currentClass = '';
+    let currentIndex = -1;
+
+    function loadStudents() {
+        let selectedClass = document.getElementById("classSelect").value;
+        currentClass = selectedClass;
+        let table = document.getElementById("studentTable");
+        table.innerHTML = "";
+
+        if (!students[selectedClass]) return;
+
+        students[selectedClass].forEach((student, index) => {
+            let row = table.insertRow();
+            row.insertCell(0).innerText = student.name;
+            row.insertCell(1).innerText = totalFees;
+            row.insertCell(2).innerText = student.paid;
+            row.insertCell(3).innerText = totalFees - student.paid;
+
+            let actionCell = row.insertCell(4);
+            let btnGroup = document.createElement("div");
+            btnGroup.className = "btn-group";
+
+            let viewButton = document.createElement("button");
+            viewButton.innerText = "View";
+            viewButton.className = "view-btn";
+            viewButton.onclick = function () { viewStudent(selectedClass, index); };
+            btnGroup.appendChild(viewButton);
+
+            
+
+           
+            actionCell.appendChild(btnGroup);
+        });
+    }
+
+    function addStudent() {
+        let selectedClass = document.getElementById("classSelect").value;
+        let studentName = document.getElementById("studentName").value;
+        let amountPaid = parseFloat(document.getElementById("amountPaid").value) || 0;
+
+        if (!selectedClass || !studentName) {
+            alert("I'm sorry !😭😭😭 select a class and enter a student name.");
+            return;
+        }
+
+        if (!students[selectedClass]) {
+            students[selectedClass] = [];
+        }
+
+        students[selectedClass].push({ name: studentName, paid: amountPaid });
+        loadStudents();
+    }
+
+    function viewStudent(className, index) {
+        let student = students[className][index];
+        alert(`Student: ${student.name}\nParent: ${student.parent}\nContact: ${student.contact}\nLocation: ${student.location}\nDate of Birth: ${student.dob}\nGender: ${student.gender}\nAdmission No: ${student.admissionNo}`);
+    }
+
+    
+</script>
+
+</body>
+</html>
